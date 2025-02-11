@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUSAPAPPY | Web Developer</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="/static/style.css" type="text/css">
+
+
+ <!-- Header -->
+    <header class="header">
+        <h1>MUSAPAPPY</h1>
+        <nav>
+            <ul class="nav">
+                <li><a href="#home">Home</a></li>
+                <li><a href="/portfolio">Portfolio</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <h2>Welcome to My World of Web Development</h2>
+        <p>Passionate about creating beautiful and functional websites.</p>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <h2>About Me</h2>
+        <div class="about-cards">
+            <div class="about-card">
+                <h3>Who Am I?</h3>
+                <p>Aspiring Web Developer & Technology Enthusiast.</p>
+            </div>
+            <div class="about-card">
+                <h3>My Skills</h3>
+                <p>HTML, CSS, JavaScript, Python, and More.</p>
+            </div>
+            <div class="about-card">
+                <h3>Hobbies</h3>
+                <p>Exploring new technologies, learning, and coding.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <h2>Portfolio</h2>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <img src="/static/p1.jpeg" alt="P1">
+                <h3>Project 1</h3>
+                <p>A responsive website built with HTML, CSS, and JavaScript.</p>
+            </div>
+            <div class="portfolio-item">
+                <img src="/static/p2.jpg" alt="Project 2">
+                <h3>Project 2</h3>
+                <p>An interactive web app using React and Node.js.</p>
+            </div>
+            <div class="portfolio-item">
+                <img src="/static/p3.jpg" alt="Project 3">
+                <h3>Project 3</h3>
+                <p>A Python-based data visualization tool.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <h2>Contact Me</h2>
+        <form action="/submit_form" method="post" class="contact-form">
+            <input type="text" name="name" placeholder="Your Name" required>
+            <input type="email" name="email" placeholder="Your Email" required>
+            <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 MUSAPAPPY. All rights reserved. | <a href="#contact">Contact Me</a></p>
+    </footer>
+
+</body>
+</html>
