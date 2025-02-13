@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sanic-app
+spec:
+  replicas: 3  # Number of replicas (pods)
+  selector:
+    matchLabels:
+      app: sanic-app
+  template:
+    metadata:
+      labels:
+        app: sanic-app
+    spec:
+      containers:
+      - name: sanic-app
+        image: pappymm/sanicapp:latest  # Use your pushed image
+        ports:
+        - containerPort: 8000
+        env:
+        - name: PYTHONUNBUFFERED
+          value: "1"
