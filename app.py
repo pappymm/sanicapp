@@ -1,12 +1,8 @@
 from sanic import Sanic, response
 from sanic.response import html, json, file, redirect, file_stream
 from sanic.request import Request
-from sanic_prometheus import monitor
 
 app = Sanic("MYSitebyMUSAPAPPY")
-
-# Add Prometheus monitoring
-monitor(app).expose_endpoint()
 
 # Configure Sanic to serve static files
 app.static("/static", "./static")
