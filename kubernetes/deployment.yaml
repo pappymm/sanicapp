@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sanic-app
+  name: sanicapp
 spec:
   replicas: 3  # Number of replicas (pods)
   selector:
     matchLabels:
-      app: sanic-app
+      app: sanicapp
   template:
     metadata:
       labels:
-        app: sanic-app
+        app: sanicapp
     spec:
       containers:
-      - name: sanic-app
+      - name: sanicapp
         image: pappymm/sanicapp:latest  # Use your pushed image
         ports:
         - containerPort: 8000
