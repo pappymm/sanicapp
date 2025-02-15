@@ -1,55 +1,60 @@
 pipeline {
     agent any
-
     environment {
-        DOCKER_HUB_CREDENTIALS = credentials('docker-hub-credentials') // Jenkins credentials for Docker Hub
-        DOCKER_IMAGE = 'pappymm/sanicapp'
-        KUBE_CONFIG = credentials('kube-config') // Jenkins credentials for Kubernetes config
+        // Set Minikube's Docker environment
+        MINIKUBE_DOCKER_ENV = sh(script: 'minikube docker-env', returnStdout: true).trim()
     }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/pappymm/sanicapp.git'
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: 'main']],
+                    extensions: [],
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/pappymm/sanicapp.git',
+                        credentialsId: 'your-git-credentials-id'
+                    ]]
+                ])
             }
         }
-
+        stage('Setup Minikube Docker Environment') {
+            steps {
+                script {
+                    // Ensure Minikube is running
+                    sh 'minikube status || minikube start'
+                    // Set up Minikube's Docker environment
+                    sh '''
+                        eval ${MINIKUBE_DOCKER_ENV}
+                        docker images
+                    '''
+                }
+            }
+        }
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("${DOCKER_IMAGE}:latest")
+                    sh '''
+                        eval ${MINIKUBE_DOCKER_ENV}
+                        docker build -t pappymm/sanicapp:latest .
+                    '''
                 }
             }
         }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
-                        docker.image("${DOCKER_IMAGE}:latest").push()
-                    }
-                }
-            }
-        }
-
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    withKubeConfig([credentialsId: 'kube-config', serverUrl: 'https://http://192.168.49.2:31687/']) {
-                        sh 'kubectl apply -f deployment.yaml'
-                        sh 'kubectl apply -f service.yaml'
-                    }
+                    sh 'kubectl apply -f k8s/deployment.yaml'
                 }
             }
         }
     }
-
     post {
+        failure {
+            echo 'Pipeline failed! Check the logs for details.'
+        }
         success {
             echo 'Pipeline succeeded!'
-        }
-        failure {
-            echo 'Pipeline failed!'
         }
     }
 }
