@@ -1,32 +1,20 @@
 pipeline {
     agent any
-    environment {
-        // Set Minikube's Docker environment
-        MINIKUBE_DOCKER_ENV = sh(script: 'minikube docker-env', returnStdout: true).trim()
-    }
     stages {
-        stage('Checkout') {
-            steps {
-                checkout([
-                    $class: 'GitSCM',
-                    branches: [[name: 'main']],
-                    extensions: [],
-                    userRemoteConfigs: [[
-                        url: 'https://github.com/pappymm/sanicapp.git',
-                        credentialsId: 'your-git-credentials-id'
-                    ]]
-                ])
-            }
-        }
-        stage('Setup Minikube Docker Environment') {
+        stage('Start Minikube') {
             steps {
                 script {
-                    // Ensure Minikube is running
-                    sh 'minikube status || minikube start'
-                    // Set up Minikube's Docker environment
                     sh '''
-                        eval ${MINIKUBE_DOCKER_ENV}
-                        docker images
+                        minikube status || minikube start
+                    '''
+                }
+            }
+        }
+        stage('Set Minikube Docker') {
+            steps {
+                script {
+                    sh '''
+                        eval $(minikube docker-env)
                     '''
                 }
             }
@@ -35,7 +23,6 @@ pipeline {
             steps {
                 script {
                     sh '''
-                        eval ${MINIKUBE_DOCKER_ENV}
                         docker build -t pappymm/sanicapp:latest .
                     '''
                 }
@@ -54,7 +41,8 @@ pipeline {
             echo 'Pipeline failed! Check the logs for details.'
         }
         success {
-            echo 'Pipeline succeeded!'
+            echo 'Pipeline completed successfully!'
         }
     }
 }
+
