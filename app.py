@@ -42,7 +42,7 @@ async def thank_you(request):
 # Route to serve CSS file
 @app.route("/styles.css")
 async def css(request):
-    return await file("styles.css")
+    return await file("static/styles.css")
 
 # Route to serve JavaScript file
 @app.route("/script.js")
